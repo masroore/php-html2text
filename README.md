@@ -1,43 +1,13 @@
-# Stopwords for PHP
+# A PHP package to convert HTML into a plain text format
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/masroore/stopwords.svg?style=flat-square)](https://packagist.org/packages/masroore/stopwords)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/masroore/php-stopwords/run-tests?label=tests)](https://github.com/masroore/php-stopwords/actions?query=workflow%3Arun-tests+branch%3Amain)
-[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/masroore/php-stopwords/Check%20&%20fix%20styling?label=code%20style)](https://github.com/masroore/php-stopwords/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
-[![Total Downloads](https://img.shields.io/packagist/dt/masroore/stopwords.svg?style=flat-square)](https://packagist.org/packages/masroore/stopwords)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/masroore/html2text.svg?style=flat-square)](https://packagist.org/packages/masroore/html2text)
+[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/masroore/php-html2text/run-tests?label=tests)](https://github.com/masroore/php-html2text/actions?query=workflow%3Arun-tests+branch%3Amain)
+[![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/masroore/php-html2text/Check%20&%20fix%20styling?label=code%20style)](https://github.com/masroore/php-html2text/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
+[![Total Downloads](https://img.shields.io/packagist/dt/masroore/html2text.svg?style=flat-square)](https://packagist.org/packages/masroore/html2text)
 
 ## Overview ##
 
 Stopwords in multiple languages that you can easily use with your PHP applications.
-
-## Supported languages
-
-Currently provides stopwords for the following languages:
-
-* Arabic
-* Azerbaijani
-* Bengali
-* Danish
-* Dutch
-* English
-* Finnish
-* French
-* German
-* Greek
-* Hungarian
-* Indonesian
-* Italian
-* Kazakh
-* Nepali
-* Norwegian
-* Portuguese
-* Romanian
-* Russian
-* Slovene
-* Spanish
-* Swedish
-* Tajik
-* Turkish
-
 
 ## Installation
 
@@ -46,38 +16,16 @@ Currently provides stopwords for the following languages:
 You can install the package via composer:
 
 ```bash
-composer require masroore/stopwords
+composer require masroore/html2text
 ```
 
 ## Usage
 
 ```php
-$stopwords = new Kaiju\Stopwords\Stopwords();
+use Kaiju\Html2Text\Html2Text;
 
-// get the list of available languages
-print_r($stopwords->getLanguages());
-
-// load stopwords for a language
-$stopwords->load('english');
-
-// load stopwords for multiple languages
-$stopwords->load(['english', 'french']);
-
-// load stopwords for all available languages
-$stopwords->load('*');
-
-// check if the given word is a stop-word
-$stopwords->isStopword('the'); // TRUE
-$stopwords->isStopword('America'); // FALSE
-
-// return a tokenized copy of the text, with stop-words and punctuation marks removed
-$text = "Good muffins cost $3.88\nin New York.  Please buy me two of them.\n\nThanks!\n";
-print_r($stopwords->strip($text));
-// ["Good","muffins","cost","$3.88","New","York","Please","buy","two","Thanks"]
-
-echo $stopwords->clean($text);
-// "Good muffins cost $3.88 New York Please buy two Thanks"
-
+$converter = new Html2Text();
+echo $converter->convert($html);
 ```
 
 ## Testing
@@ -92,7 +40,7 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Thank you for considering to contribute to Collision. All the contribution guidelines are mentioned [here](CONTRIBUTING.md).
+Thank you for considering to contribute to Html2Text. All the contribution guidelines are mentioned [here](CONTRIBUTING.md).
 
 ## Security Vulnerabilities
 
@@ -105,4 +53,4 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## License
 
-Collision is an open-sourced software licensed under the [MIT license](LICENSE.md).
+Html2Text is an open-sourced software licensed under the [MIT license](LICENSE.md).
