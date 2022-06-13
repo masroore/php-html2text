@@ -1,4 +1,4 @@
-# A PHP package to convert HTML into a plain text format
+# A PHP package to convert HTML into plain text -- no HTML tags allowed in the output.
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/masroore/html2text.svg?style=flat-square)](https://packagist.org/packages/masroore/html2text)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/masroore/php-html2text/run-tests?label=tests)](https://github.com/masroore/php-html2text/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -7,7 +7,7 @@
 
 ## Overview ##
 
-Stopwords in multiple languages that you can easily use with your PHP applications.
+**masroore/html2text** is a PHP package that converts a page of HTML into clean, easy-to-read plain ASCII text.
 
 ## Installation
 
@@ -20,6 +20,8 @@ composer require masroore/html2text
 ```
 
 ## Usage
+
+Extract text from HTML:
 
 ```php
 use Kaiju\Html2Text\Html2Text;
