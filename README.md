@@ -30,6 +30,25 @@ $converter = new Html2Text();
 echo $converter->convert($html);
 ```
 
+**Callback functions**
+
+You are able to change process of formatting by providing callbacks in pre-processing, tag-replacing and post-processing:
+
+```php
+# assign a pre-processing callback function. (transform href links)
+$converter->setPreProcessingCallback(fn (string $s) => preg_replace('%<\s*a[^>]*href=[\'"](.*?)[\'"][^>]*>([\s\S]*?)<\/\s*a\s*>%i', '$2 ($1)', $s));
+
+# assign a tag-replacement callback function. (replace <li> tags)
+$converter->setTagReplacementCallback(fn (string $s) => preg_replace('/<\s*li[^>]*>/i', "\n- ", $s));
+
+# post-processing hook
+$converter->setPostProcessingCallback(...);
+
+# process HTML
+echo $converter->convert($html);
+```
+
+
 ## Testing
 
 ```bash

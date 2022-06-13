@@ -6,27 +6,32 @@ namespace Kaiju\Html2Text;
 
 class Html2Text
 {
-    /**
-     * @var callable
-     */
-    private $preprocessing = null;
+    public static array $nbspCodes = ["\xc2\xa0", '\\u00a0'];
+
+    public static array $zwnjCodes = ["\xe2\x80\x8c", '\\u200c'];
 
     /**
      * @var callable
      */
-    private $tagreplacement = null;
+    private $preProcessingCallback;
 
     /**
      * @var callable
      */
-    private $postprocessing = null;
+    private $tagReplacementCallback;
+
+    /**
+     * @var callable
+     */
+    private $postProcessingCallback;
 
     public function convert(string $html): string
     {
         $text = $html;
 
-        if (null !== $this->preprocessing && is_callable($this->preprocessing)) {
-            $text = $this->preprocessing($text);
+        if (null !== $this->preProcessingCallback && is_callable($this->preProcessingCallback)) {
+            // $text = $this->preProcessingCallback($text);
+            $text = call_user_func_array($this->preProcessingCallback, [$text]);
         }
 
         // replace line breaks
@@ -47,8 +52,9 @@ class Html2Text
         // remove !DOCTYPE
         $text = preg_replace('/<!DOCTYPE.*?>/i', '', $text);
 
-        if (null !== $this->tagreplacement && is_callable($this->tagreplacement)) {
-            $text = $this->tagreplacement($text);
+        if (null !== $this->tagReplacementCallback && is_callable($this->tagReplacementCallback)) {
+            // $text = $this->tagReplacementCallback($text);
+            $text = call_user_func_array($this->tagReplacementCallback, [$text]);
         }
 
         $doubleNewlineTags = ['p', 'h[1-6]', 'dl', 'dt', 'dd', 'ol', 'ul',
@@ -87,10 +93,11 @@ class Html2Text
         $text = preg_replace("/\n+$/", '', $text);
 
         // Decode HTML entities.
-        $text = preg_replace_callback('/&([^;]+);/', fn($m) => html_entity_decode($m[0]), $text);
+        $text = preg_replace_callback('/&([^;]+);/', fn ($m) => html_entity_decode($m[0]), $text);
 
-        if (null !== $this->postprocessing && is_callable($this->postprocessing)) {
-            $text = $this->postprocessing($text);
+        if (null !== $this->postProcessingCallback && is_callable($this->postProcessingCallback)) {
+            // $text = $this->postProcessingCallback($text);
+            $text = call_user_func_array($this->postProcessingCallback, [$text]);
         }
 
         // return $text;
@@ -149,10 +156,6 @@ class Html2Text
         return $text;
     }
 
-    public static array $nbspCodes = ["\xc2\xa0", '\\u00a0'];
-
-    public static array $zwnjCodes = ["\xe2\x80\x8c", '\\u200c'];
-
     /**
      * Replace any special characters with simple text versions, to prevent output issues:
      * - Convert non-breaking spaces to regular spaces; and
@@ -166,18 +169,24 @@ class Html2Text
         return $text;
     }
 
-    public function setPostprocessing(callable $postprocessing): void
+    public function setPreProcessingCallback(callable $callback): self
     {
-        $this->postprocessing = $postprocessing;
+        $this->preProcessingCallback = $callback;
+
+        return $this;
     }
 
-    public function setTagreplacement(callable $tagreplacement): void
+    public function setTagReplacementCallback(callable $callback): self
     {
-        $this->tagreplacement = $tagreplacement;
+        $this->tagReplacementCallback = $callback;
+
+        return $this;
     }
 
-    public function setPreprocessing(callable $preprocessing): void
+    public function setPostProcessingCallback(callable $callback): self
     {
-        $this->preprocessing = $preprocessing;
+        $this->postProcessingCallback = $callback;
+
+        return $this;
     }
 }
